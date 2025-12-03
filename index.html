@@ -496,7 +496,7 @@
        ======================================== -->
   <script>
     // --- Netlify Function Configuration ---
-    const FUNCTION_URL = '/api/gemini/v1beta/models/gemini-2.5-pro:generateContent';
+    const FUNCTION_URL = `/api/gemini/v1beta/models/gemini-2.5-pro:generateContent?key=${GEMINI_API_KEY}`;
 
     // --- State Management ---
     let simulationComplete = false;
@@ -519,21 +519,21 @@
     }
 
     // --- Updated Gemini API Helper (calls Netlify Function) ---
-    async function callGemini(systemPrompt, userPrompt, useGrounding = false) {
-      const loading = document.getElementById('gemini-loading');
-      loading.classList.remove('hidden');
+    async function callGemini(systemPrompt, userPrompt, useGrounding = false) { 
+      const loading = document.getElementById('gemini-loading');
+      loading.classList.remove('hidden');
 
-      try {
-        const response = await fetch(FUNCTION_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            systemPrompt,
-            userPrompt,
-            useGrounding
-          })
-        });
-
+      try {
+        const response = await fetch(FUNCTION_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            systemPrompt: systemPrompt,
+            userPrompt: userPrompt,
+            useGrounding: useGrounding
+          })
+        });
+        // ... rest of the try block
         if (!response.ok) {
           const error = await response.json();
           throw new Error(error.error || 'API Error');
