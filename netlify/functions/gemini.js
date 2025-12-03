@@ -1,46 +1,114 @@
 // netlify/functions/gemini.js
-export async function handler(event) {
-  // Only allow POST
-  if (event.httpMethod !== "POST") {
-    return { statusCode: 405, body: "Method Not Allowed" };
+export default async (req, context) => {
+  // CORS headers for your site
+  const headers = {
+    'Access-Control-Allow-Origin': '*', // Tighten to your domain in production
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Content-Type': 'application/json'
+  };
+
+  // Handle preflight
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { status: 204, headers });
   }
 
-  // CORS (so your GitHub Pages front-end can call this)
-  const cors = {
-    "Access-Control-Allow-Origin": "*", // lock down to your domain if you want
-    "Access-Control-Allow-Headers": "Content-Type",
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
-  };
-  if (event.httpMethod === "OPTIONS") {
-    return { statusCode: 200, headers: cors, body: "" };
+  // Only allow POST
+  if (req.method !== 'POST') {
+    return new Response(
+      JSON.stringify({ error: 'Method not allowed' }), 
+      { status: 405, headers }
+    );
   }
 
   try {
-    const { systemPrompt, userPrompt, useGrounding } = JSON.parse(event.body || "{}");
+    // Parse request
+    const { systemPrompt, userPrompt, useGrounding } = await req.json();
 
+    // Input validation
+    if (!userPrompt || typeof userPrompt !== 'string') {
+      return new Response(
+        JSON.stringify({ error: 'userPrompt is required' }), 
+        { status: 400, headers }
+      );
+    }
+
+    // Get API key from environment
+    const API_KEY = process.env.GEMINI_API_KEY;
+    if (!API_KEY) {
+      console.error('GEMINI_API_KEY not found in environment');
+      return new Response(
+        JSON.stringify({ error: 'Server configuration error' }), 
+        { status: 500, headers }
+      );
+    }
+
+    // Build Gemini payload
     const payload = {
-      contents: [{ parts: [{ text: userPrompt || "" }] }],
-      systemInstruction: { parts: [{ text: systemPrompt || "" }] },
-      ...(useGrounding ? { tools: [{ google_search: {} }] } : {}),
+      contents: [{ parts: [{ text: userPrompt }] }]
     };
 
-    const resp = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-goog-api-key": process.env.GEMINI_API_KEY,
-        },
-        body: JSON.stringify(payload),
-      }
+    if (systemPrompt) {
+      payload.systemInstruction = { parts: [{ text: systemPrompt }] };
+    }
+
+    if (useGrounding) {
+      payload.tools = [{ google_search: {} }];
+    }
+
+    // Call Gemini API
+    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${API_KEY}`;
+    
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 30000); // 30s timeout
+
+    const response = await fetch(geminiUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      signal: controller.signal
+    });
+
+    clearTimeout(timeout);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Gemini API error:', response.status, errorText);
+      return new Response(
+        JSON.stringify({ 
+          error: 'AI service error', 
+          details: response.status 
+        }), 
+        { status: response.status, headers }
+      );
+    }
+
+    const data = await response.json();
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || 
+                 'No response generated';
+
+    return new Response(
+      JSON.stringify({ text }), 
+      { status: 200, headers }
     );
 
-    const data = await resp.json();
-    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || "No response";
+  } catch (error) {
+    console.error('Function error:', error);
+    
+    if (error.name === 'AbortError') {
+      return new Response(
+        JSON.stringify({ error: 'Request timeout' }), 
+        { status: 504, headers }
+      );
+    }
 
-    return { statusCode: 200, headers: cors, body: JSON.stringify({ text }) };
-  } catch (e) {
-    return { statusCode: 500, headers: cors, body: JSON.stringify({ error: String(e) }) };
+    return new Response(
+      JSON.stringify({ error: 'Internal server error' }), 
+      { status: 500, headers }
+    );
   }
-}
+};
+
+export const config = {
+  path: "/api/gemini"
+};
