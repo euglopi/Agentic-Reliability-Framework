@@ -130,7 +130,7 @@
       <div class="text-center mb-12">
         <h2 id="architecture-title" class="text-3xl font-bold text-slate-900">High-Level Architecture Overview</h2>
         <p class="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">
-          The architecture is composed of <span class="font-bold text-slate-900">5 distinct layers</span> working in concert to achieve autonomous incident resolution. Click on a layer to reveal its components and performance metrics below.
+          Composed of <span class="font-bold text-slate-900">5 distinct layers</span> working in concert to achieve autonomous incident resolution. Click on a layer to reveal its components and performance metrics below.
         </p>
       </div>
 
@@ -202,7 +202,7 @@
                 <ul class="text-sm text-slate-600 space-y-2">
                   <li>• Real-time monitoring dashboard</li>
                   <li>• Incident simulation controls</li>
-                  <li>• Live Agent Reasoning Visualization</li>
+                  <li>• Live agent reasoning visualization</li>
                   <li>• WebSocket-based event streaming</li>
                 </ul>
               </div>
@@ -263,7 +263,7 @@
                 </ul>
               </div>
               <div class="flex justify-between items-center bg-blue-50 p-4 rounded-lg border border-blue-100">
-                <div><h4 class="font-bold text-blue-900">Success Rate</h4><p class="text-sm text-blue-700">Automated Resolution</p></div>
+                <div><h4 class="font-bold text-blue-900">Success Rate</h4><p class="text-sm text-blue-700">Automated resolution</p></div>
                 <span class="text-3xl font-bold text-blue-600">99.2%</span>
               </div>
               <div class="grid grid-cols-2 gap-4">
@@ -299,10 +299,10 @@
         <div class="p-8 md:p-10 border-b border-slate-700 bg-slate-800/50 flex flex-col md:flex-row justify-between items-center gap-6">
           <div>
             <h2 id="intelligence-title" class="text-3xl font-bold text-white flex items-center">
-              Multi-Agent Intelligence Hub
+              Multi-Agent Intelligence
               <span class="ml-3 px-3 py-1 bg-blue-600 text-xs rounded-full font-medium tracking-wide">CLAUDE OPUS 4.5 ENHANCED</span>
             </h2>
-            <p class="text-slate-400 mt-2 max-w-xl">Interact with the autonomous agents. Run a simulation to see the real-time reasoning logs and generate AI-powered reports.</p>
+            <p class="text-slate-400 mt-2 max-w-xl">Interact with the autonomous agents. Run a simulation to see real-time reasoning logs and generate AI-powered reports.</p>
           </div>
           <div class="flex flex-col sm:flex-row gap-3">
             <button onclick="runSimulation()" id="sim-btn" class="group relative inline-flex items-center justify-center px-6 py-3 text-base font-bold text-white transition-all duration-200 bg-blue-600 rounded-lg hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 disabled:opacity-50 disabled:cursor-not-allowed" aria-controls="console-detective console-diagnostic console-predictive">
@@ -325,7 +325,7 @@
             <div class="flex items-center justify-between mb-4"><h3 class="text-lg font-bold text-teal-400">Diagnostic Agent</h3><span class="text-2xl">🔍</span></div>
             <div id="console-diagnostic" class="flex-1 h-64 bg-slate-950 rounded-lg p-4 font-mono text-xs text-green-400 overflow-y-auto console-scroll border border-slate-800/50" role="log" aria-live="polite"><span class="opacity-40 select-none">// Waiting for anomaly alerts...</span></div>
             <button onclick="critiqueDiagnosisLogic()" id="critique-btn" class="mt-4 w-full py-2 bg-teal-600 hover:bg-teal-500 text-white font-semibold rounded transition-colors text-xs flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-slate-700" disabled>
-              <span class="mr-2">✨</span> AI Logic Critique (Gemini)
+              <span class="mr-2">✨</span> AI Logic Critique
             </button>
           </div>
 
@@ -354,7 +354,7 @@
     <section id="flow" class="scroll-mt-24" role="region" aria-labelledby="flow-title">
       <div class="text-center mb-16">
         <h2 id="flow-title" class="text-3xl font-bold text-slate-900">End-to-End Incident Flow</h2>
-        <p class="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">Visualizing the path from detection to resolution for an <span class="font-bold text-slate-900">Upstream Gateway Timeout</span>.</p>
+        <p class="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">Path visualization from detection to resolution.</p>
       </div>
 
       <div class="max-w-4xl mx-auto relative">
@@ -364,7 +364,7 @@
           <!-- Steps (unchanged content) -->
           <div class="flow-step relative flex items-center justify-between md:justify-normal w-full group">
             <div class="order-1 w-full md:w-5/12 text-right pr-8 hidden md:block">
-              <h4 class="font-bold text-lg text-slate-900">Incoming Event</h4>
+              <h4 class="font-bold text-lg text-slate-900">Layer 1 Incoming Event</h4>
               <p class="text-sm text-slate-500 mt-1">External monitor detects anomaly: Upstream Gateway Timeout.</p>
             </div>
             <div class="z-10 order-1 flex items-center justify-center w-16 h-16 bg-white border-4 border-slate-200 rounded-full shadow-sm group-hover:border-blue-500 transition-colors">
@@ -444,7 +444,7 @@
     <!-- SECTION 4: METRICS & SECURITY -->
     <section id="performance" class="grid grid-cols-1 lg:grid-cols-2 gap-12 scroll-mt-24" role="region" aria-labelledby="metrics-title">
       <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-8">
-        <h3 id="metrics-title" class="text-xl font-bold text-slate-900 mb-6">Processing Latency — Demo Actual vs Production SLO</h3>
+        <h3 id="metrics-title" class="text-xl font-bold text-slate-900 mb-6">Processing Latency: Demo Actual vs Production SLO</h3>
         <div class="chart-container"><canvas id="performanceChart" aria-label="Performance chart"></canvas></div>
       </div>
 
@@ -456,9 +456,9 @@
 
         <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
           <h4 class="font-bold text-slate-900 mb-3 flex items-center"><span class="mr-2">🔒</span> Security Hardening</h4>
-          <p class="text-sm text-slate-600 mb-4 italic">"The system isn’t just performant but also secure and production-conscious."</p>
+          <p class="text-sm text-slate-600 mb-4 italic">The system isn’t just performant but also secure and production-conscious.</p>
           <ul class="text-sm space-y-2 text-slate-700">
-            <li class="flex items-start"><span class="text-emerald-500 mr-2">✓</span> <strong>Pydantic.dev</strong> validation on all API inputs</li>
+            <li class="flex items-start"><span class="text-emerald-500 mr-2">✓</span> <strong>Pydantic.dev </strong> validation on all API inputs</li>
             <li class="flex items-start"><span class="text-emerald-500 mr-2">✓</span> Role-Based Access Control (RBAC) simulation</li>
             <li class="flex items-start"><span class="text-emerald-500 mr-2">✓</span> Rate Limiting on input streams</li>
             <li class="flex items-start"><span class="text-emerald-500 mr-2">✓</span> Secure, read-only access via FAISS</li>
@@ -475,7 +475,7 @@
     <footer class="border-t border-slate-200 pt-12 pb-8 text-center">
       <p class="text-slate-500 font-medium">Built for Iterate x Columbia AI Club Hackathon</p>
       <p class="text-slate-400 text-sm mt-2">December 4, 2025</p>
-      <p class="text-slate-400 text-sm mt-2 font-mono">Powered by Anthropic & Lovable - Hathora</p>
+      <p class="text-slate-400 text-sm mt-2 font-mono">Powered by Anthropic, Lovable & Hathora</p>
     </footer>
   </main>
 
