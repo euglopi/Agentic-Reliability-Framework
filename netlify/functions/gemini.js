@@ -57,7 +57,7 @@ export default async (req, context) => {
     }
 
     // Call Gemini API
-    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${API_KEY}`;
+    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
     
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 30000); // 30s timeout
