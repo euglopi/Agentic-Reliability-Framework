@@ -1,6 +1,7 @@
 # **Agentic Reliability Framework**
 
-**Agentic Reliability Framework** is a production-grade, multi-layer AI reliability system designed for modern cloud and enterprise environments.  
+**Agentic Reliability Framework** is a production-grade, multi-layer AI reliability system designed for modern cloud and enterprise environments. 
+
 It continuously monitors critical business services, detects anomalies in real time, explains impact in business terms, and triggers policy-based self-healing actions.
 
 ---
