@@ -14,7 +14,7 @@ At its core, the system uses **3 specialized AI agents** working together:
 - **🔍 Diagnostic Agent** — root-cause analysis and incident investigation  
 - **🔮 Predictive Agent** — forecasting future risks and emerging failure patterns  
 
-These agents operate over telemetry from key business areas (e.g., APIs, authentication, payments, databases, caches) and assign severity levels — *low → critical* — based on both technical and business impact.
+These agents operate over telemetry from key business areas (e.g. APIs, authentication, payments, databases, caches) and assign severity levels — *low → critical* — based on both technical and business impact.
 
 ---
 
