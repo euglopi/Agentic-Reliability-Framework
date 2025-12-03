@@ -1,833 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ARF | Agentic Reliability Framework</title>
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ARF | Agentic Reliability Framework</title>
 
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- SEO -->
+  <meta name="description" content="Agentic Reliability Framework (ARF): a production-grade, multi-layer AI reliability system for enterprise—continuous monitoring, anomaly detection, business-impact diagnosis, and policy-based self-healing." />
+  <meta name="keywords" content="agentic AI,reliability,SRE,observability,incident response,faiss,gemini,chart.js,tailwind" />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://euglopi.github.io/Agentic-Reliability-Framework/" />
 
-    <!-- Chosen Palette: Corporate Reliability (Slate, Blue, Teal, White) -->
-    <!-- Application Structure Plan: 
-         1. Hero: High-level mission statement and key p50 metrics.
-         2. Interactive Architecture (The 5 Layers): Split view. Left side is the stack, Right side is the detail view. 
-         3. Intelligence Hub: The 3 Agents. Includes the Simulation controls and Gemini API features (Critique & Post-Mortem).
-         4. End-to-End Flow: Vertical interactive timeline of an incident.
-         5. Performance & Security: Data visualization and static text blocks for hardening/advantages.
-    -->
-    
-    <!-- CONFIRMATION: NO SVG graphics used (except icons as SVG code within HTML). NO Mermaid JS used. -->
+  <!-- Open Graph / Twitter -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Agentic Reliability Framework (ARF)" />
+  <meta property="og:description" content="Production-grade, multi-layer AI reliability system: continuous monitoring, root-cause analysis, and real-time recovery." />
+  <meta property="og:url" content="https://euglopi.github.io/Agentic-Reliability-Framework/" />
+  <meta property="og:image" content="https://euglopi.github.io/Agentic-Reliability-Framework/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Agentic Reliability Framework (ARF)" />
+  <meta name="twitter:description" content="Enterprise reliability with agentic AI—diagnosis, impact, and self-healing." />
+  <meta name="twitter:image" content="https://euglopi.github.io/Agentic-Reliability-Framework/og-image.png" />
+  <meta name="theme-color" content="#0f172a" />
 
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f8fafc; /* Slate 50 */
-            color: #0f172a; /* Slate 900 */
-        }
-        
-        .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 300px;
-            max-height: 400px;
-        }
+  <!-- Favicons (optional—drop files into repo root and uncomment) -->
+  <!-- <link rel="icon" href="/favicon.ico"> -->
+  <!-- <link rel="apple-touch-icon" href="/apple-touch-icon.png"> -->
 
-        @media (min-width: 768px) {
-            .chart-container {
-                height: 350px;
-            }
-        }
+  <!-- Performance: preconnects for CDNs -->
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-        /* Console Scrollbar */
-        .console-scroll::-webkit-scrollbar { width: 8px; }
-        .console-scroll::-webkit-scrollbar-track { background: #1e293b; }
-        .console-scroll::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
-        .console-scroll::-webkit-scrollbar-thumb:hover { background: #64748b; }
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-        /* Interactive Layer Card Styles */
-        .layer-card {
-            transition: all 0.2s ease-in-out;
-            border-left: 4px solid transparent;
-        }
-        .layer-card:hover {
-            transform: translateX(4px);
-            background-color: #f1f5f9;
-        }
-        .active-layer {
-            border-left: 4px solid #2563eb; /* Blue 600 */
-            background-color: #eff6ff; /* Blue 50 */
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
+  <!-- Tailwind (keep non-deferred to avoid FOUC) -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
-        .gradient-text {
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-image: linear-gradient(to right, #2563eb, #0d9488);
-        }
-    </style>
+  <!-- Chart.js (safe to defer) -->
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+
+  <style>
+    :root { color-scheme: light dark; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, 'Apple Color Emoji','Segoe UI Emoji';
+      background-color: #f8fafc; /* Slate 50 */
+      color: #0f172a; /* Slate 900 */
+    }
+    /* Respect reduced motion for timeline/hover effects */
+    @media (prefers-reduced-motion: reduce) {
+      * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+    }
+    .chart-container {
+      position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto;
+      height: 300px; max-height: 400px;
+    }
+    @media (min-width: 768px) { .chart-container { height: 350px; } }
+    .console-scroll::-webkit-scrollbar { width: 8px; }
+    .console-scroll::-webkit-scrollbar-track { background: #1e293b; }
+    .console-scroll::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+    .console-scroll::-webkit-scrollbar-thumb:hover { background: #64748b; }
+    .layer-card { transition: all 0.2s ease-in-out; border-left: 4px solid transparent; }
+    .layer-card:hover { transform: translateX(4px); background-color: #f1f5f9; }
+    .active-layer { border-left: 4px solid #2563eb; background-color: #eff6ff; box-shadow: 0 4px 6px -1px rgba(0,0,0,.1); }
+    .gradient-text { background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-image: linear-gradient(to right, #2563eb, #0d9488); }
+    /* Skip link */
+    .skip-link { position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden; }
+    .skip-link:focus { position:static; width:auto; height:auto; padding:.5rem .75rem; background:#111827; color:#fff; z-index:9999; }
+  </style>
+
+  <!-- JSON-LD (optional, nice for portfolio) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Agentic Reliability Framework",
+    "applicationCategory": "DevOpsApplication",
+    "operatingSystem": "Web",
+    "description": "Multi-layer agentic AI for reliability with diagnosis, business impact, and self-healing.",
+    "url": "https://euglopi.github.io/Agentic-Reliability-Framework/"
+  }
+  </script>
 </head>
 <body class="antialiased selection:bg-blue-100 selection:text-blue-900">
+  <a href="#main" class="skip-link">Skip to content</a>
 
-    <!-- Navigation -->
-    <nav class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <span class="text-xl font-extrabold tracking-tight text-slate-900">ARF <span class="font-normal text-slate-400">|</span> <span class="text-blue-600">System Architecture</span></span>
-                </div>
-                <div class="hidden md:flex items-center space-x-8">
-                    <button onclick="scrollToSection('architecture')" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Architecture</button>
-                    <button onclick="scrollToSection('intelligence')" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Intelligence</button>
-                    <button onclick="scrollToSection('flow')" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Incident Flow</button>
-                    <button onclick="scrollToSection('performance')" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors">Metrics</button>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <div class="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse"></div>
-                    <span class="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2 py-1 rounded-full border border-emerald-100">System Online</span>
-                </div>
-            </div>
+  <!-- Navigation -->
+  <nav class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200" role="navigation" aria-label="Primary">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16">
+        <div class="flex items-center">
+          <span class="text-xl font-extrabold tracking-tight text-slate-900">ARF <span class="font-normal text-slate-400">|</span> <span class="text-blue-600">System Architecture</span></span>
         </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <header class="bg-white border-b border-slate-200 relative overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-br from-slate-50 to-blue-50/50 opacity-50"></div>
-        <div class="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-            <h1 class="text-4xl md:text-6xl font-extrabold text-slate-900 tracking-tight mb-6">
-                Agentic Reliability Framework
-            </h1>
-            <p class="mt-4 max-w-3xl mx-auto text-xl text-slate-600 leading-relaxed">
-                Production-grade, multi-layer AI system designed for enterprise reliability. Continuous learning, autonomous diagnosis, real-time recovery.
-            </p>
-            
-            <div class="mt-10 flex flex-wrap justify-center gap-4 text-sm font-medium">
-                <div class="flex items-center bg-white px-4 py-2 rounded-full shadow-sm border border-slate-200 text-slate-700">
-                    <span class="text-blue-600 mr-2">🚀</span> p50 latency &lt;150 ms
-                </div>
-                <div class="flex items-center bg-white px-4 py-2 rounded-full shadow-sm border border-slate-200 text-slate-700">
-                    <span class="text-indigo-600 mr-2">⚡</span> Powered by Anthropic & Lovable - Hathora
-                </div>
-                <div class="flex items-center bg-white px-4 py-2 rounded-full shadow-sm border border-slate-200 text-slate-700">
-                    <span class="text-emerald-600 mr-2">🛡️</span> Security Hardened
-                </div>
-            </div>
+        <div class="hidden md:flex items-center space-x-8">
+          <button onclick="scrollToSection('architecture')" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors" aria-label="Go to Architecture">Architecture</button>
+          <button onclick="scrollToSection('intelligence')" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors" aria-label="Go to Intelligence">Intelligence</button>
+          <button onclick="scrollToSection('flow')" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors" aria-label="Go to Incident Flow">Incident Flow</button>
+          <button onclick="scrollToSection('performance')" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors" aria-label="Go to Metrics">Metrics</button>
         </div>
-    </header>
+        <div class="flex items-center space-x-2" aria-live="polite">
+          <div class="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse"></div>
+          <span class="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2 py-1 rounded-full border border-emerald-100">System Online</span>
+        </div>
+      </div>
+    </div>
+  </nav>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-24">
+  <!-- Hero Section -->
+  <header class="bg-white border-b border-slate-200 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-slate-50 to-blue-50/50 opacity-50"></div>
+    <div class="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+      <h1 class="text-4xl md:text-6xl font-extrabold text-slate-900 tracking-tight mb-6">Agentic Reliability Framework</h1>
+      <p class="mt-4 max-w-3xl mx-auto text-xl text-slate-600 leading-relaxed">
+        Production-grade, multi-layer AI system designed for enterprise reliability. Continuous learning, autonomous diagnosis, real-time recovery.
+      </p>
+      <div class="mt-10 flex flex-wrap justify-center gap-4 text-sm font-medium">
+        <div class="flex items-center bg-white px-4 py-2 rounded-full shadow-sm border border-slate-200 text-slate-700"><span class="text-blue-600 mr-2">🚀</span> p50 latency &lt;150 ms</div>
+        <div class="flex items-center bg-white px-4 py-2 rounded-full shadow-sm border border-slate-200 text-slate-700"><span class="text-indigo-600 mr-2">⚡</span> Powered by Anthropic & Lovable - Hathora</div>
+        <div class="flex items-center bg-white px-4 py-2 rounded-full shadow-sm border border-slate-200 text-slate-700"><span class="text-emerald-600 mr-2">🛡️</span> Security Hardened</div>
+      </div>
+    </div>
+  </header>
 
-        <!-- SECTION 1: ARCHITECTURE LAYERS -->
-        <section id="architecture" class="scroll-mt-24">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-slate-900">High-Level Architecture Overview</h2>
-                <p class="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">
-                    The architecture is composed of <span class="font-bold text-slate-900">5 distinct layers</span> working in concert to achieve autonomous incident resolution. Click on a layer to reveal its components and performance metrics below.
-                </p>
+  <main id="main" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-24" role="main">
+    <!-- SECTION 1: ARCHITECTURE LAYERS -->
+    <section id="architecture" class="scroll-mt-24" role="region" aria-labelledby="architecture-title">
+      <div class="text-center mb-12">
+        <h2 id="architecture-title" class="text-3xl font-bold text-slate-900">High-Level Architecture Overview</h2>
+        <p class="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">
+          The architecture is composed of <span class="font-bold text-slate-900">5 distinct layers</span> working in concert to achieve autonomous incident resolution. Click on a layer to reveal its components and performance metrics below.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <!-- Layer Navigation (Left) -->
+        <div class="lg:col-span-4 space-y-3">
+          <div class="layer-card active-layer cursor-pointer p-5 bg-white rounded-xl shadow-sm border border-slate-200 group" onclick="showLayer('layer1', this)" aria-label="Show Layer 1">
+            <div class="flex justify-between items-center">
+              <div>
+                <h3 class="font-bold text-slate-900 group-hover:text-blue-600 transition-colors">Layer 1: Presentation</h3>
+                <p class="text-sm text-slate-500 mt-1">Web Interface (Async Event Loop)</p>
+              </div>
+              <span class="text-2xl opacity-80">🖥️</span>
             </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                <!-- Layer Navigation (Left) -->
-                <div class="lg:col-span-4 space-y-3">
-                    <!-- Layer 1 -->
-                    <div class="layer-card active-layer cursor-pointer p-5 bg-white rounded-xl shadow-sm border border-slate-200 group" onclick="showLayer('layer1', this)">
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <h3 class="font-bold text-slate-900 group-hover:text-blue-600 transition-colors">Layer 1: Presentation</h3>
-                                <p class="text-sm text-slate-500 mt-1">Web Interface (Async Event Loop)</p>
-                            </div>
-                            <span class="text-2xl opacity-80">🖥️</span>
-                        </div>
-                    </div>
-                    <!-- Layer 2 -->
-                    <div class="layer-card cursor-pointer p-5 bg-white rounded-xl shadow-sm border border-slate-200 group" onclick="showLayer('layer2', this)">
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <h3 class="font-bold text-slate-900 group-hover:text-blue-600 transition-colors">Layer 2: Core Coordination</h3>
-                                <p class="text-sm text-slate-500 mt-1">Enhanced Reliability Engine</p>
-                            </div>
-                            <span class="text-2xl opacity-80">⚙️</span>
-                        </div>
-                    </div>
-                    <!-- Layer 3 -->
-                    <div class="layer-card cursor-pointer p-5 bg-white rounded-xl shadow-sm border border-slate-200 group" onclick="showLayer('layer3', this)">
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <h3 class="font-bold text-slate-900 group-hover:text-blue-600 transition-colors">Layer 3: Multi-Agent Intelligence</h3>
-                                <p class="text-sm text-slate-500 mt-1">Agentic Thought Process</p>
-                            </div>
-                            <span class="text-2xl opacity-80">🕵️</span>
-                        </div>
-                    </div>
-                    <!-- Layer 4 -->
-                    <div class="layer-card cursor-pointer p-5 bg-white rounded-xl shadow-sm border border-slate-200 group" onclick="showLayer('layer4', this)">
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <h3 class="font-bold text-slate-900 group-hover:text-blue-600 transition-colors">Layer 4: Consensus & Action</h3>
-                                <p class="text-sm text-slate-500 mt-1">Orchestration Manager</p>
-                            </div>
-                            <span class="text-2xl opacity-80">🎯</span>
-                        </div>
-                    </div>
-                    <!-- Layer 5 -->
-                    <div class="layer-card cursor-pointer p-5 bg-white rounded-xl shadow-sm border border-slate-200 group" onclick="showLayer('layer5', this)">
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <h3 class="font-bold text-slate-900 group-hover:text-blue-600 transition-colors">Layer 5: Data & Learning</h3>
-                                <p class="text-sm text-slate-500 mt-1">Knowledge Base Engine</p>
-                            </div>
-                            <span class="text-2xl opacity-80">🧠</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Detail Panel (Right) -->
-                <div class="lg:col-span-8 bg-white rounded-2xl shadow-lg border border-slate-200 p-8 min-h-[400px] flex flex-col justify-center relative overflow-hidden">
-                    <div class="absolute top-0 right-0 p-4 opacity-5">
-                        <svg width="200" height="200" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zm0 9l2.5-1.25L12 8.5l-2.5 1.25L12 11zm0 2.5l-5-2.5-5 2.5L12 22l10-8.5-5-2.5-5 2.5z"/></svg>
-                    </div>
-
-                    <!-- Layer 1 Content -->
-                    <div id="layer1-content" class="layer-content animate-fade-in space-y-6">
-                        <div class="border-b border-slate-100 pb-4">
-                            <h3 class="text-2xl font-bold text-slate-900">Layer 1: Presentation Layer</h3>
-                            <p class="text-slate-500 mt-2">The user-facing window into the AI's operations, built for real-time, low-latency monitoring.</p>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="bg-slate-50 p-5 rounded-lg border border-slate-100">
-                                <h4 class="font-bold text-slate-800 mb-3 flex items-center"><span class="text-blue-500 mr-2">●</span> Gradio: ML apps via Python</h4>
-                                <ul class="text-sm text-slate-600 space-y-2">
-                                    <li>• Real-time monitoring dashboard</li>
-                                    <li>• Incident simulation controls</li>
-                                    <li>• Live Agent Reasoning Visualization</li>
-                                    <li>• WebSocket-based event streaming</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Layer 2 Content -->
-                    <div id="layer2-content" class="layer-content hidden animate-fade-in space-y-6">
-                        <div class="border-b border-slate-100 pb-4">
-                            <h3 class="text-2xl font-bold text-slate-900">Layer 2: Core Coordination Engine</h3>
-                            <p class="text-slate-500 mt-2">The system's brain stem, handling all incoming data and routing it safely to the agent layer.</p>
-                        </div>
-                        <div class="overflow-hidden rounded-lg border border-slate-200">
-                            <table class="min-w-full divide-y divide-slate-200">
-                                <thead class="bg-slate-50">
-                                    <tr>
-                                        <th class="px-6 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Component</th>
-                                        <th class="px-6 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Function</th>
-                                        <th class="px-6 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Performance</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white divide-y divide-slate-200">
-                                    <tr>
-                                        <td class="px-6 py-3 text-sm font-medium text-slate-900">Input Validation</td>
-                                        <td class="px-6 py-3 text-sm text-slate-500">Schema validation, sanitization</td>
-                                        <td class="px-6 py-3 text-sm text-emerald-600 font-mono font-bold">&lt;5ms</td>
-                                    </tr>
-                                    <tr class="bg-blue-50/50">
-                                        <td class="px-6 py-3 text-sm font-medium text-blue-900">Business Impact Analysis</td>
-                                        <td class="px-6 py-3 text-sm text-blue-800">Revenue impact quantification</td>
-                                        <td class="px-6 py-3 text-sm text-emerald-600 font-mono font-bold">~10ms</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-6 py-3 text-sm font-medium text-slate-900">Event Store</td>
-                                        <td class="px-6 py-3 text-sm text-slate-500">Persistent event logging</td>
-                                        <td class="px-6 py-3 text-sm text-emerald-600 font-mono font-bold">~15ms</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-6 py-3 text-sm font-medium text-slate-900">Rate Limiter</td>
-                                        <td class="px-6 py-3 text-sm text-slate-500">Traffic throttling (60 req/min)</td>
-                                        <td class="px-6 py-3 text-sm text-emerald-600 font-mono font-bold">&lt;1ms</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!-- Layer 3 Content -->
-                    <div id="layer3-content" class="layer-content hidden animate-fade-in space-y-6">
-                        <div class="border-b border-slate-100 pb-4">
-                            <h3 class="text-2xl font-bold text-slate-900">Layer 3: Multi-Agent Intelligence</h3>
-                            <p class="text-slate-500 mt-2">3 specialized agents run in parallel, enhanced by Anthropic Claude Opus 4.5. This ensures high-quality analysis by preventing single points of failure.</p>
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
-                            <div class="p-4 bg-indigo-50 rounded-xl border border-indigo-100">
-                                <div class="text-4xl mb-3">🕵️</div>
-                                <h4 class="font-bold text-indigo-900">Detective Agent</h4>
-                                <p class="text-xs text-indigo-700 mt-1 leading-snug">Pattern Recognition & Anomaly Detection</p>
-                            </div>
-                            <div class="p-4 bg-teal-50 rounded-xl border border-teal-100 ring-2 ring-teal-200">
-                                <div class="text-4xl mb-3">🔍</div>
-                                <h4 class="font-bold text-teal-900">Diagnostic Agent</h4>
-                                <p class="text-xs text-teal-700 mt-1 leading-snug">Root Cause Analysis & Recovery Actions</p>
-                            </div>
-                            <div class="p-4 bg-purple-50 rounded-xl border border-purple-100">
-                                <div class="text-4xl mb-3">🔮</div>
-                                <h4 class="font-bold text-purple-900">Predictive Agent</h4>
-                                <p class="text-xs text-purple-700 mt-1 leading-snug">Proactive Risk Mitigation & Planning</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Layer 4 Content -->
-                    <div id="layer4-content" class="layer-content hidden animate-fade-in space-y-6">
-                        <div class="border-b border-slate-100 pb-4">
-                            <h3 class="text-2xl font-bold text-slate-900">Layer 4: Consensus & Action Layer</h3>
-                            <p class="text-slate-500 mt-2">The bridge between intelligent analysis and autonomous execution.</p>
-                        </div>
-                        <div class="space-y-4">
-                            <div class="bg-slate-50 p-4 rounded-lg border border-slate-100">
-                                <h4 class="font-bold text-slate-800 mb-2">Result Aggregation</h4>
-                                <ul class="list-disc list-inside text-sm text-slate-600 space-y-1 ml-2">
-                                    <li>Consensus-based decision making</li>
-                                    <li>Weighted agent voting (by confidence)</li>
-                                    <li>Conflict resolution logic</li>
-                                </ul>
-                            </div>
-                            <div class="flex justify-between items-center bg-blue-50 p-4 rounded-lg border border-blue-100">
-                                <div>
-                                    <h4 class="font-bold text-blue-900">Success Rate</h4>
-                                    <p class="text-sm text-blue-700">Automated Resolution</p>
-                                </div>
-                                <span class="text-3xl font-bold text-blue-600">99.2%</span>
-                            </div>
-                            <div class="grid grid-cols-2 gap-4">
-                                <div class="bg-white p-3 rounded border border-slate-200 text-sm">
-                                    <span class="font-semibold text-slate-700 block">Agent Parallelization</span>
-                                    <span class="text-slate-500">3 concurrent agents</span>
-                                </div>
-                                <div class="bg-white p-3 rounded border border-slate-200 text-sm">
-                                    <span class="font-semibold text-slate-700 block">Aggregation Latency</span>
-                                    <span class="text-slate-500">~50ms</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Layer 5 Content -->
-                    <div id="layer5-content" class="layer-content hidden animate-fade-in space-y-6">
-                        <div class="border-b border-slate-100 pb-4">
-                            <h3 class="text-2xl font-bold text-slate-900">Layer 5: Data & Learning Layer</h3>
-                            <p class="text-slate-500 mt-2">Knowledge Base / Learning Engine providing persistent memory.</p>
-                        </div>
-                        <div class="bg-slate-50 p-6 rounded-xl border border-slate-200">
-                            <h4 class="font-bold text-slate-800 flex items-center text-lg mb-4">
-                                <span class="mr-3 text-2xl">🧠</span> 
-                                Facebook AI [Vector] Similarity Search (FAISS)
-                            </h4>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div class="bg-white p-3 rounded shadow-sm text-center">
-                                    <div class="text-slate-400 text-xs uppercase font-bold tracking-wider mb-1">Capability</div>
-                                    <div class="text-slate-800 font-medium text-sm">Historical Pattern Matching</div>
-                                </div>
-                                <div class="bg-white p-3 rounded shadow-sm text-center">
-                                    <div class="text-slate-400 text-xs uppercase font-bold tracking-wider mb-1">Capability</div>
-                                    <div class="text-slate-800 font-medium text-sm">Continuous Learning</div>
-                                </div>
-                                <div class="bg-white p-3 rounded shadow-sm text-center">
-                                    <div class="text-slate-400 text-xs uppercase font-bold tracking-wider mb-1">Capability</div>
-                                    <div class="text-slate-800 font-medium text-sm">Recovery Recommendations</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
+          </div>
+          <div class="layer-card cursor-pointer p-5 bg-white rounded-xl shadow-sm border border-slate-200 group" onclick="showLayer('layer2', this)" aria-label="Show Layer 2">
+            <div class="flex justify-between items-center">
+              <div>
+                <h3 class="font-bold text-slate-900 group-hover:text-blue-600 transition-colors">Layer 2: Core Coordination</h3>
+                <p class="text-sm text-slate-500 mt-1">Enhanced Reliability Engine</p>
+              </div>
+              <span class="text-2xl opacity-80">⚙️</span>
             </div>
-        </section>
-
-        <!-- SECTION 2: INTELLIGENCE HUB & SIMULATION -->
-        <section id="intelligence" class="scroll-mt-24">
-            <div class="bg-slate-900 rounded-3xl overflow-hidden shadow-2xl">
-                <!-- Header -->
-                <div class="p-8 md:p-10 border-b border-slate-700 bg-slate-800/50 flex flex-col md:flex-row justify-between items-center gap-6">
-                    <div>
-                        <h2 class="text-3xl font-bold text-white flex items-center">
-                            Multi-Agent Intelligence Hub
-                            <span class="ml-3 px-3 py-1 bg-blue-600 text-xs rounded-full font-medium tracking-wide">CLAUDE OPUS 4.5 ENHANCED</span>
-                        </h2>
-                        <p class="text-slate-400 mt-2 max-w-xl">Interact with the autonomous agents. Run a simulation to see the real-time reasoning logs and generate AI-powered reports.</p>
-                    </div>
-                    <div class="flex flex-col sm:flex-row gap-3">
-                        <button onclick="runSimulation()" id="sim-btn" class="group relative inline-flex items-center justify-center px-6 py-3 text-base font-bold text-white transition-all duration-200 bg-blue-600 rounded-lg hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 disabled:opacity-50 disabled:cursor-not-allowed">
-                            <span class="mr-2 group-hover:animate-pulse">⚡</span> Simulate Critical Incident
-                        </button>
-                        <button onclick="draftPostMortem()" id="post-mortem-btn" class="inline-flex items-center justify-center px-6 py-3 text-base font-bold text-white transition-all duration-200 bg-purple-600 rounded-lg hover:bg-purple-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-600 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-purple-900/20" disabled>
-                            <span class="mr-2">✨</span> Draft Post-Mortem
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Agent Grid -->
-                <div class="p-8 md:p-10 grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    
-                    <!-- Detective -->
-                    <div class="bg-slate-800/50 rounded-2xl border border-slate-700 p-6 flex flex-col">
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-lg font-bold text-indigo-400">Detective Agent</h3>
-                            <span class="text-2xl">🕵️</span>
-                        </div>
-                        <div id="console-detective" class="flex-1 h-64 bg-slate-950 rounded-lg p-4 font-mono text-xs text-green-400 overflow-y-auto console-scroll border border-slate-800/50">
-                            <span class="opacity-40 select-none">// Waiting for event stream...</span>
-                        </div>
-                        <div class="mt-4 pt-4 border-t border-slate-700/50 text-xs text-slate-400 space-y-1">
-                            <div class="flex justify-between"><span>Function:</span> <span class="text-slate-200">Anomaly Detection</span></div>
-                            <div class="flex justify-between"><span>Technique:</span> <span class="text-slate-200">Statistical Models</span></div>
-                        </div>
-                    </div>
-
-                    <!-- Diagnostic -->
-                    <div class="bg-slate-800 rounded-2xl border border-teal-500/30 p-6 flex flex-col relative ring-1 ring-teal-500/20 shadow-lg shadow-teal-900/10">
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-lg font-bold text-teal-400">Diagnostic Agent</h3>
-                            <span class="text-2xl">🔍</span>
-                        </div>
-                        <div id="console-diagnostic" class="flex-1 h-64 bg-slate-950 rounded-lg p-4 font-mono text-xs text-green-400 overflow-y-auto console-scroll border border-slate-800/50">
-                            <span class="opacity-40 select-none">// Waiting for anomaly alerts...</span>
-                        </div>
-                        
-                        <!-- Gemini Feature 1 -->
-                        <button onclick="critiqueDiagnosisLogic()" id="critique-btn" class="mt-4 w-full py-2 bg-teal-600 hover:bg-teal-500 text-white font-semibold rounded transition-colors text-xs flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-slate-700" disabled>
-                            <span class="mr-2">✨</span> AI Logic Critique (Gemini)
-                        </button>
-                    </div>
-
-                    <!-- Predictive -->
-                    <div class="bg-slate-800/50 rounded-2xl border border-slate-700 p-6 flex flex-col">
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-lg font-bold text-purple-400">Predictive Agent</h3>
-                            <span class="text-2xl">🔮</span>
-                        </div>
-                        <div id="console-predictive" class="flex-1 h-64 bg-slate-950 rounded-lg p-4 font-mono text-xs text-green-400 overflow-y-auto console-scroll border border-slate-800/50">
-                            <span class="opacity-40 select-none">// Monitoring trends...</span>
-                        </div>
-                        <div class="mt-4 pt-4 border-t border-slate-700/50 text-xs text-slate-400 space-y-1">
-                            <div class="flex justify-between"><span>Function:</span> <span class="text-slate-200">Risk Mitigation</span></div>
-                            <div class="flex justify-between"><span>Technique:</span> <span class="text-slate-200">Linear Regression</span></div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- Gemini Output Panel -->
-                <div id="gemini-output-area" class="hidden border-t border-slate-700 bg-slate-800 p-8 animate-fade-in">
-                    <div class="max-w-4xl mx-auto">
-                        <h3 id="gemini-output-title" class="text-xl font-bold text-white mb-4 flex items-center">
-                            <!-- Icon injected via JS -->
-                        </h3>
-                        <div class="bg-slate-900/50 rounded-lg p-6 border border-slate-700 text-slate-300 text-sm whitespace-pre-wrap leading-relaxed shadow-inner" id="gemini-output-content"></div>
-                        <div id="gemini-loading" class="hidden flex items-center text-blue-400 mt-4 animate-pulse">
-                            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                            Connecting to Gemini AI...
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 3: END-TO-END FLOW -->
-        <section id="flow" class="scroll-mt-24">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold text-slate-900">End-to-End Incident Flow</h2>
-                <p class="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">
-                    Visualizing the path from detection to resolution for an <span class="font-bold text-slate-900">Upstream Gateway Timeout</span>.
-                </p>
-            </div>
-
-            <div class="max-w-4xl mx-auto relative">
-                <!-- Timeline spine -->
-                <div class="absolute left-8 md:left-1/2 h-full w-0.5 bg-slate-200 transform md:-translate-x-1/2"></div>
-
-                <div class="space-y-12">
-                    <!-- Steps will be auto-generated or manually placed but I'll make them static for robustness and animate classes via JS -->
-                    
-                    <!-- Step 1 -->
-                    <div class="flow-step relative flex items-center justify-between md:justify-normal w-full group">
-                        <div class="order-1 w-full md:w-5/12 text-right pr-8 hidden md:block">
-                            <h4 class="font-bold text-lg text-slate-900">Incoming Event</h4>
-                            <p class="text-sm text-slate-500 mt-1">External monitor detects anomaly: Upstream Gateway Timeout.</p>
-                        </div>
-                        <div class="z-10 order-1 flex items-center justify-center w-16 h-16 bg-white border-4 border-slate-200 rounded-full shadow-sm group-hover:border-blue-500 transition-colors">
-                            <span class="font-bold text-slate-500 group-hover:text-blue-600">1</span>
-                        </div>
-                        <div class="order-1 w-full md:w-5/12 pl-8 md:hidden">
-                            <h4 class="font-bold text-lg text-slate-900">Incoming Event</h4>
-                            <p class="text-sm text-slate-500 mt-1">External monitor detects anomaly.</p>
-                        </div>
-                    </div>
-
-                    <!-- Step 2 -->
-                    <div class="flow-step relative flex items-center justify-between md:justify-normal w-full group flex-row-reverse md:flex-row">
-                        <div class="order-1 w-full md:w-5/12 pr-8 hidden md:block"></div> <!-- Spacer -->
-                        <div class="z-10 order-1 flex items-center justify-center w-16 h-16 bg-white border-4 border-slate-200 rounded-full shadow-sm group-hover:border-blue-500 transition-colors md:mx-auto">
-                            <span class="font-bold text-slate-500 group-hover:text-blue-600">2</span>
-                        </div>
-                        <div class="order-1 w-full md:w-5/12 pl-8">
-                            <h4 class="font-bold text-lg text-slate-900">Layer 2 Ingest</h4>
-                            <p class="text-sm text-slate-500 mt-1">Event Validated. Business Impact Analysis: Revenue at Risk calculated.</p>
-                        </div>
-                    </div>
-
-                    <!-- Step 3 -->
-                    <div class="flow-step relative flex items-center justify-between md:justify-normal w-full group">
-                        <div class="order-1 w-full md:w-5/12 text-right pr-8 hidden md:block">
-                            <h4 class="font-bold text-lg text-slate-900">Layer 3 Diagnosis</h4>
-                            <p class="text-sm text-slate-500 mt-1">3 agents run in parallel to identify root cause.</p>
-                        </div>
-                        <div class="z-10 order-1 flex items-center justify-center w-16 h-16 bg-white border-4 border-slate-200 rounded-full shadow-sm group-hover:border-blue-500 transition-colors">
-                            <span class="font-bold text-slate-500 group-hover:text-blue-600">3</span>
-                        </div>
-                        <div class="order-1 w-full md:w-5/12 pl-8 md:hidden">
-                            <h4 class="font-bold text-lg text-slate-900">Layer 3 Diagnosis</h4>
-                            <p class="text-sm text-slate-500 mt-1">3 agents run in parallel.</p>
-                        </div>
-                    </div>
-
-                    <!-- Step 4 -->
-                    <div class="flow-step relative flex items-center justify-between md:justify-normal w-full group flex-row-reverse md:flex-row">
-                        <div class="order-1 w-full md:w-5/12 pr-8 hidden md:block"></div>
-                        <div class="z-10 order-1 flex items-center justify-center w-16 h-16 bg-white border-4 border-slate-200 rounded-full shadow-sm group-hover:border-blue-500 transition-colors md:mx-auto">
-                            <span class="font-bold text-slate-500 group-hover:text-blue-600">4</span>
-                        </div>
-                        <div class="order-1 w-full md:w-5/12 pl-8">
-                            <h4 class="font-bold text-lg text-slate-900">Layer 4 Consensus</h4>
-                            <p class="text-sm text-slate-500 mt-1">Weighted voting occurs. Action prepared.</p>
-                        </div>
-                    </div>
-
-                    <!-- Step 5 -->
-                    <div class="flow-step relative flex items-center justify-between md:justify-normal w-full group">
-                        <div class="order-1 w-full md:w-5/12 text-right pr-8 hidden md:block">
-                            <h4 class="font-bold text-lg text-slate-900">Layer 5 Learning</h4>
-                            <p class="text-sm text-slate-500 mt-1">Incident pattern stored in FAISS for future recall.</p>
-                        </div>
-                        <div class="z-10 order-1 flex items-center justify-center w-16 h-16 bg-white border-4 border-slate-200 rounded-full shadow-sm group-hover:border-blue-500 transition-colors">
-                            <span class="font-bold text-slate-500 group-hover:text-blue-600">5</span>
-                        </div>
-                        <div class="order-1 w-full md:w-5/12 pl-8 md:hidden">
-                            <h4 class="font-bold text-lg text-slate-900">Layer 5 Learning</h4>
-                            <p class="text-sm text-slate-500 mt-1">Pattern stored in FAISS.</p>
-                        </div>
-                    </div>
-
-                    <!-- Step 6 -->
-                    <div class="flow-step relative flex items-center justify-between md:justify-normal w-full group flex-row-reverse md:flex-row">
-                        <div class="order-1 w-full md:w-5/12 pr-8 hidden md:block"></div>
-                        <div class="z-10 order-1 flex items-center justify-center w-16 h-16 bg-emerald-500 border-4 border-emerald-600 rounded-full shadow-lg shadow-emerald-200 text-white md:mx-auto">
-                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                        </div>
-                        <div class="order-1 w-full md:w-5/12 pl-8">
-                            <h4 class="font-bold text-lg text-slate-900">Action & Recovery</h4>
-                            <p class="text-sm text-slate-500 mt-1">Idempotent script deployed. <span class="text-emerald-600 font-bold">Timeout Resolved.</span></p>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 4: METRICS & SECURITY -->
-        <section id="performance" class="grid grid-cols-1 lg:grid-cols-2 gap-12 scroll-mt-24">
-            <!-- Chart -->
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-8">
-                <h3 class="text-xl font-bold text-slate-900 mb-6">Processing Latency — Demo Actual vs Production SLO</h3>
-                <div class="chart-container">
-                    <canvas id="performanceChart"></canvas>
-                </div>
-            </div>
-
-            <!-- KPI Cards & Security -->
-            <div class="space-y-8">
-                <div class="grid grid-cols-2 gap-6">
-                    <div class="bg-blue-50 rounded-xl p-6 border border-blue-100">
-                        <div class="text-sm text-blue-600 font-bold uppercase tracking-wider mb-1">Time to Diagnose</div>
-                        <div class="text-3xl font-extrabold text-blue-900">2.5s</div>
-                        <div class="text-xs text-blue-500 mt-2">Target: &lt;10s</div>
-                    </div>
-                    <div class="bg-emerald-50 rounded-xl p-6 border border-emerald-100">
-                        <div class="text-sm text-emerald-600 font-bold uppercase tracking-wider mb-1">Success Rate</div>
-                        <div class="text-3xl font-extrabold text-emerald-900">99.2%</div>
-                        <div class="text-xs text-emerald-500 mt-2">Target: 99.0%</div>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                    <h4 class="font-bold text-slate-900 mb-3 flex items-center">
-                        <span class="mr-2">🔒</span> Security Hardening
-                    </h4>
-                    <p class="text-sm text-slate-600 mb-4 italic">"The system isn’t just performant but also secure and production-conscious."</p>
-                    <ul class="text-sm space-y-2 text-slate-700">
-                        <li class="flex items-start"><span class="text-emerald-500 mr-2">✓</span> <strong>Pydantic.dev</strong> validation on all API inputs</li>
-                        <li class="flex items-start"><span class="text-emerald-500 mr-2">✓</span> Role-Based Access Control (RBAC) simulation</li>
-                        <li class="flex items-start"><span class="text-emerald-500 mr-2">✓</span> Rate Limiting on input streams</li>
-                        <li class="flex items-start"><span class="text-emerald-500 mr-2">✓</span> Secure, read-only access via FAISS</li>
-                    </ul>
-                </div>
-
-                <div class="bg-indigo-50 rounded-xl border border-indigo-100 p-6">
-                    <h4 class="font-bold text-indigo-900 mb-2">Competitive Advantage</h4>
-                    <p class="text-sm text-indigo-800">Translates the system’s technical strengths into tangible product and business value. High reliability, speed, and cost reduction through automated SRE tasks.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Footer -->
-        <footer class="border-t border-slate-200 pt-12 pb-8 text-center">
-            <p class="text-slate-500 font-medium">Built for Iterate x Columbia AI Club Hackathon</p>
-            <p class="text-slate-400 text-sm mt-2">December 4, 2025</p>
-            <p class="text-slate-400 text-sm mt-2 font-mono">Powered by Anthropic & Lovable - Hathora</p>
-        </footer>
-
-    </main>
-
-    <!-- JavaScript Logic -->
-    <script>
-        // --- Gemini API Configuration ---
-        const API_KEY = ""; // Provided at runtime
-        const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent";
-        
-        // --- State Management ---
-        let simulationComplete = false;
-        let simulationData = {};
-
-        // --- Navigation ---
-        function scrollToSection(id) {
-            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // --- Layer Logic ---
-        function showLayer(layerId, element) {
-            // Reset active styles
-            document.querySelectorAll('.layer-card').forEach(el => {
-                el.classList.remove('active-layer');
-                el.classList.remove('ring-1');
-                el.classList.remove('ring-blue-200');
-            });
-            // Set active style
-            element.classList.add('active-layer');
-            element.classList.add('ring-1');
-            element.classList.add('ring-blue-200');
-
-            // Toggle Content
-            document.querySelectorAll('.layer-content').forEach(el => el.classList.add('hidden'));
-            const content = document.getElementById(layerId + '-content');
-            content.classList.remove('hidden');
-        }
-
-        // --- Gemini API Helper ---
-        async function callGemini(systemPrompt, userPrompt, useGrounding = false) {
-            const loading = document.getElementById('gemini-loading');
-            loading.classList.remove('hidden');
-            
-            const payload = {
-                contents: [{ parts: [{ text: userPrompt }] }],
-                systemInstruction: { parts: [{ text: systemPrompt }] }
-            };
-
-            if (useGrounding) {
-                payload.tools = [{ "google_search": {} }];
-            }
-
-            try {
-                const response = await fetch(`${GEMINI_URL}?key=${API_KEY}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                if (!response.ok) throw new Error('API Error');
-                const data = await response.json();
-                loading.classList.add('hidden');
-                return data.candidates?.[0]?.content?.parts?.[0]?.text || "Error generating response.";
-            } catch (e) {
-                console.error(e);
-                loading.classList.add('hidden');
-                return "Error connecting to AI service. Please check API key/connection.";
-            }
-        }
-
-        // --- Simulation Logic ---
-        const logs = {
-            detective: [
-                { t: 200, msg: "Ingesting stream from Layer 2..." },
-                { t: 800, msg: "Anomaly Detected: Latency Spike (Z-Score > 3.5)" },
-                { t: 1500, msg: "Querying FAISS Knowledge Base..." },
-                { t: 2200, msg: "MATCH FOUND: Incident #402 (Gateway Timeout)" },
-                { t: 2500, msg: "Similarity Score: 0.96" }
-            ],
-            diagnostic: [
-                { t: 2600, msg: "Receiving anomaly context..." },
-                { t: 3200, msg: "Correlating with Business Impact Analysis..." },
-                { t: 4000, msg: "Root Cause: Upstream Gateway Timeout" },
-                { t: 4500, msg: "Impact: High Revenue Risk" },
-                { t: 5000, msg: "Recommendation: Atomic Reroute (Idempotent)" }
-            ],
-            predictive: [
-                { t: 100, msg: "Baseline capacity check..." },
-                { t: 3000, msg: "Trend Analysis: Cascading failure probability 78%" },
-                { t: 4800, msg: "Risk Mitigation: Approved immediate reroute" },
-                { t: 5500, msg: "Post-action Stability Forecast: 99.9%" }
-            ]
-        };
-
-        function runSimulation() {
-            const btn = document.getElementById('sim-btn');
-            btn.disabled = true;
-            btn.innerHTML = '<span class="animate-spin mr-2">⚡</span> Running...';
-            
-            // Reset UI
-            document.querySelectorAll('[id^="console-"]').forEach(el => el.innerHTML = '');
-            document.getElementById('gemini-output-area').classList.add('hidden');
-            simulationComplete = false;
-
-            // Run Logs
-            Object.keys(logs).forEach(agent => {
-                logs[agent].forEach(log => {
-                    setTimeout(() => {
-                        const consoleEl = document.getElementById(`console-${agent}`);
-                        const div = document.createElement('div');
-                        div.className = "mb-1 border-l-2 border-transparent pl-2 hover:border-slate-600 transition-colors";
-                        div.innerHTML = `<span class="text-slate-500 mr-2">[${log.t}ms]</span>${log.msg}`;
-                        consoleEl.appendChild(div);
-                        consoleEl.scrollTop = consoleEl.scrollHeight;
-                    }, log.t);
-                });
-            });
-
-            // Trigger Timeline Animation
-            const steps = document.querySelectorAll('.flow-step .z-10');
-            steps.forEach((step, i) => {
-                setTimeout(() => {
-                    step.classList.remove('bg-white', 'border-slate-200', 'text-slate-500');
-                    step.classList.add('bg-blue-600', 'border-blue-600', 'text-white', 'scale-110');
-                }, i * 1000);
-            });
-
-            setTimeout(() => {
-                btn.disabled = false;
-                btn.innerHTML = '<span class="mr-2">⚡</span> Simulate Critical Incident';
-                document.getElementById('critique-btn').disabled = false;
-                document.getElementById('post-mortem-btn').disabled = false;
-                simulationComplete = true;
-                simulationData = {
-                    incident: "Upstream Gateway Timeout",
-                    rca: "Provider Latency",
-                    action: "Atomic Reroute",
-                    impact: "High Revenue Risk",
-                    resolution: "Success"
-                };
-            }, 6000);
-        }
-
-        // --- Feature 1: AI Logic Critique ---
-        async function critiqueDiagnosisLogic() {
-            if (!simulationComplete) return;
-            const btn = document.getElementById('critique-btn');
-            const outputArea = document.getElementById('gemini-output-area');
-            const title = document.getElementById('gemini-output-title');
-            const content = document.getElementById('gemini-output-content');
-
-            btn.disabled = true;
-            btn.innerHTML = 'Analyzing...';
-            outputArea.classList.remove('hidden');
-            
-            title.innerHTML = '<span class="mr-2 text-2xl">✨</span> AI Logic Critique (Senior SRE Persona)';
-            content.innerText = "";
-            
-            // Prompt construction
-            const logText = logs.diagnostic.map(l => l.msg).join('\n');
-            const prompt = `You are a Senior Site Reliability Engineer. Critique the following automated diagnostic log for an "Upstream Gateway Timeout". Use Google Search to verify if "Atomic Reroute" is a standard industry best practice for this error. Be concise and professional.`;
-            
-            const response = await callGemini(prompt, logText, true);
-            content.innerText = response;
-            
-            btn.disabled = false;
-            btn.innerHTML = '<span class="mr-2">✨</span> AI Logic Critique (Gemini)';
-        }
-
-        // --- Feature 2: Draft Post-Mortem ---
-        async function draftPostMortem() {
-            if (!simulationComplete) return;
-            const btn = document.getElementById('post-mortem-btn');
-            const outputArea = document.getElementById('gemini-output-area');
-            const title = document.getElementById('gemini-output-title');
-            const content = document.getElementById('gemini-output-content');
-
-            btn.disabled = true;
-            btn.innerHTML = 'Drafting...';
-            outputArea.classList.remove('hidden');
-            
-            title.innerHTML = '<span class="mr-2 text-2xl">✨</span> Executive Post-Mortem Draft';
-            content.innerText = "";
-
-            const prompt = `You are an Incident Commander. Draft a formal, reassuring post-mortem email to executives based on these JSON details. Mention the "p50 latency <150 ms" achievement.`;
-            const dataStr = JSON.stringify(simulationData);
-
-            const response = await callGemini(prompt, dataStr, false);
-            content.innerText = response;
-
-            btn.disabled = false;
-            btn.innerHTML = '<span class="mr-2">✨</span> Draft Post-Mortem';
-        }
-
-        // --- Chart.js ---
-        document.addEventListener('DOMContentLoaded', () => {
-            const ctx = document.getElementById('performanceChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['Processing Latency (ms)', 'Time to Diagnose (s)', 'Time to Resolve (s)'],
-                    datasets: [
-                        {
-                            label: 'Demo Actual',
-                            data: [150, 2.5, 7.0],
-                            backgroundColor: '#3b82f6',
-                            borderRadius: 6
-                        },
-                        {
-                            label: 'Production SLO (Limit)',
-                            data: [500, 10, 60],
-                            backgroundColor: '#cbd5e1',
-                            borderRadius: 6
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'bottom' },
-                        tooltip: {
-                            mode: 'index',
-                            intersect: false,
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: { color: '#f1f5f9' }
-                        },
-                        x: {
-                            grid: { display: false }
-                        }
-                    }
-                }
-            });
-        });
-
-    </script>
-</body>
-</html>
+          </div>
+          <div class="layer-card cursor-pointer p-5 bg-white rounded-xl shadow-sm border border-slate-200 group" onclick="showLayer('layer3', this)" aria-label="Show Layer 3">
+            <div class="flex justify-between items-center">
+              <div>
+                <h3 class="font-bold text-slate-900 group-hover:text-blue-600 transition-colors">Layer 3: Multi-Agent Intelligence</h3>
+                <p class="text-sm text-slate-500 mt-1">Agentic Thought Process</p>
+              </div>
