@@ -2,13 +2,6 @@
   functions = "netlify/functions"
 
 [[redirects]]
-  from = "/api/gemini"
-  to = "/.netlify/functions/gemini"
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
   status = 200
-  force = true
-  conditions = { Function = false }
-
-[[headers]]
-  for = "/api/*"
-  [headers.values]
-    Access-Control-Allow-Origin = "*"
