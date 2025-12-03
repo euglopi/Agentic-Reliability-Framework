@@ -8,7 +8,7 @@ It continuously monitors critical business services, detects anomalies in real t
 
 ## 🧠 Core Architecture
 
-At its core, the system uses **three specialized AI agents** working together:
+At its core, the system uses **3 specialized AI agents** working together:
 
 - **🕵️ Detective Agent** — anomaly detection and pattern recognition across latency, error rate, and throughput  
 - **🔍 Diagnostic Agent** — root-cause analysis and incident investigation  
