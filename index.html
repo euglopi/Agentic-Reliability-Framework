@@ -130,7 +130,7 @@
       </p>
       <div class="mt-10 flex flex-wrap justify-center gap-4 text-sm font-medium">
         <div class="flex items-center bg-white px-4 py-2 rounded-full shadow-sm border border-slate-200 text-slate-700"><span class="text-blue-600 mr-2">🚀</span> p50 latency &lt;150 ms</div>
-        <div class="flex items-center bg-white px-4 py-2 rounded-full shadow-sm border border-slate-200 text-slate-700"><span class="text-indigo-600 mr-2">⚡</span> Powered by Anthropic & Lovable - Hathora</div>
+        <div class="flex items-center bg-white px-4 py-2 rounded-full shadow-sm border border-slate-200 text-slate-700"><span class="text-indigo-600 mr-2">⚡</span> Powered by Anthropic, Lovable & Hathora</div>
         <div class="flex items-center bg-white px-4 py-2 rounded-full shadow-sm border border-slate-200 text-slate-700"><span class="text-emerald-600 mr-2">🛡️</span> Security Hardened</div>
       </div>
     </div>
@@ -140,7 +140,7 @@
     <!-- SECTION 1: ARCHITECTURE LAYERS -->
     <section id="architecture" class="scroll-mt-24" role="region" aria-labelledby="architecture-title">
       <div class="text-center mb-12">
-        <h2 id="architecture-title" class="text-3xl font-bold text-slate-900">High-Level Architecture Overview</h2>
+        <h2 id="architecture-title" class="text-3xl font-bold text-slate-900">High-Level Architecture</h2>
         <p class="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">
           Composed of <span class="font-bold text-slate-900">5 distinct layers</span> working in concert to achieve autonomous incident resolution. Click on a layer to reveal its components and performance metrics below.
         </p>
@@ -250,7 +250,7 @@
           <div id="layer3-content" class="layer-content hidden animate-fade-in space-y-6">
             <div class="border-b border-slate-100 pb-4">
               <h3 class="text-2xl font-bold text-slate-900">Layer 3: Multi-Agent Intelligence</h3>
-              <p class="text-slate-500 mt-2">3 specialized agents run in parallel, enhanced by Anthropic Claude Opus 4.5. This ensures high-quality analysis by preventing single points of failure.</p>
+              <p class="text-slate-500 mt-2">3 specialized agents run in parallel, enhanced by Claude Opus 4.5, ensuring high-quality analysis by preventing single points of failure.</p>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
               <div class="p-4 bg-indigo-50 rounded-xl border border-indigo-100"><div class="text-4xl mb-3">🕵️</div><h4 class="font-bold text-indigo-900">Detective Agent</h4><p class="text-xs text-indigo-700 mt-1 leading-snug">Pattern Recognition & Anomaly Detection</p></div>
@@ -312,7 +312,7 @@
           <div>
             <h2 id="intelligence-title" class="text-3xl font-bold text-white flex items-center">
               Multi-Agent Intelligence
-              <span class="ml-3 px-3 py-1 bg-blue-600 text-xs rounded-full font-medium tracking-wide">CLAUDE OPUS 4.5 ENHANCED</span>
+              <span class="ml-3 px-3 py-1 bg-blue-600 text-xs rounded-full font-medium tracking-wide">CLAUDE OPUS 4.5</span>
             </h2>
             <p class="text-slate-400 mt-2 max-w-xl">Interact with the autonomous agents. Run a simulation to see real-time reasoning logs and generate AI-powered reports.</p>
           </div>
@@ -395,7 +395,7 @@
             </div>
             <div class="order-1 w-full md:w-5/12 pl-8">
               <h4 class="font-bold text-lg text-slate-900">Layer 2 Ingest</h4>
-              <p class="text-sm text-slate-500 mt-1">Event Validated. Business Impact Analysis: Revenue at Risk calculated.</p>
+              <p class="text-sm text-slate-500 mt-1">Event Validated. Business impact analysis: Revenue at risk calculated.</p>
             </div>
           </div>
 
@@ -445,7 +445,7 @@
             </div>
             <div class="order-1 w-full md:w-5/12 pl-8">
               <h4 class="font-bold text-lg text-slate-900">Action & Recovery</h4>
-              <p class="text-sm text-slate-500 mt-1">Idempotent script deployed. <span class="text-emerald-600 font-bold">Timeout Resolved.</span></p>
+              <p class="text-sm text-slate-500 mt-1">Idempotent script deployed. <span class="text-emerald-600 font-bold">Timeout resolved.</span></p>
             </div>
           </div>
 
@@ -470,7 +470,7 @@
           <h4 class="font-bold text-slate-900 mb-3 flex items-center"><span class="mr-2">🔒</span> Security Hardening</h4>
           <p class="text-sm text-slate-600 mb-4 italic">The system isn’t just performant but also secure and production-conscious.</p>
           <ul class="text-sm space-y-2 text-slate-700">
-            <li class="flex items-start"><span class="text-emerald-500 mr-2">✓</span> <strong>Pydantic.dev </strong> validation on all API inputs</li>
+            <li class="flex items-start"><span class="text-emerald-500 mr-2">✓</span> Validation on all API inputs (Pydantic.dev)</li>
             <li class="flex items-start"><span class="text-emerald-500 mr-2">✓</span> Role-Based Access Control (RBAC) simulation</li>
             <li class="flex items-start"><span class="text-emerald-500 mr-2">✓</span> Rate Limiting on input streams</li>
             <li class="flex items-start"><span class="text-emerald-500 mr-2">✓</span> Secure, read-only access via FAISS</li>
@@ -665,7 +665,7 @@
           labels: ['Processing Latency (ms)', 'Time to Diagnose (s)', 'Time to Resolve (s)'],
           datasets: [
             { label: 'Demo Actual', data: [150, 2.5, 7.0], backgroundColor: '#3b82f6', borderRadius: 6 },
-            { label: 'Production SLO (Limit)', data: [500, 10, 60], backgroundColor: '#cbd5e1', borderRadius: 6 }
+            { label: 'Production SLO (Target Limit)', data: [500, 10, 60], backgroundColor: '#cbd5e1', borderRadius: 6 }
           ]
         },
         options: {
